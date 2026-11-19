@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jalalatdin Ramanov — Backend Developer</title>
+  <meta name="description" content="Jalalatdin Ramanov, backend developer (PHP / Laravel) based in Nukus, Uzbekistan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;500;800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --bg-alt: #0e1219;
+      --surface: #121722;
+      --line: #1a2132;
+      --border: #222a3a;
+      --border-strong: #2c3550;
+      --text: #e8ecf4;
+      --text-soft: #d5dbea;
+      --muted: #98a2b8;
+      --accent: #5aa9ff;
+      --ok: #6fd3a0;
+      --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+      --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: .8; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .section { border-top: 1px solid var(--line); padding: 96px 0; }
+    .section--alt { background: var(--bg-alt); }
+
+    .mono { font-family: var(--font-mono); }
+    .eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: .14em; color: var(--accent); }
+    .h2 {
+      margin: 12px 0 0;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(32px, 5vw, 44px);
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+    .muted { color: var(--muted); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(11, 14, 20, .85);
+      backdrop-filter: blur(8px);
+    }
+    .nav__inner {
+      display: flex; flex-wrap: wrap; gap: 8px 40px;
+      align-items: center; justify-content: space-between;
+      padding-top: 12px; padding-bottom: 12px;
+      font-family: var(--font-mono); font-size: 13px; letter-spacing: .04em;
+    }
+    .nav__links { display: flex; flex-wrap: wrap; gap: 0 28px; }
+    .nav__links a { min-height: 44px; display: flex; align-items: center; color: var(--muted); }
+    .nav__links a.is-active { color: var(--accent); }
+
+    /* Hero */
+    .hero {
+      display: flex; flex-wrap: wrap; gap: 56px; align-items: center;
+      padding-top: 56px; padding-bottom: 96px;
+    }
+    .hero__text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+    .hero__first {
+      font-family: var(--font-display); font-weight: 300;
+      font-size: clamp(28px, 4vw, 40px); letter-spacing: .06em; line-height: 1; color: #c9d1e2;
+    }
+    .hero__last {
+      margin: 0; font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(56px, 10vw, 88px); line-height: .95; letter-spacing: -.02em;
+    }
+    .hero__role { font-family: var(--font-mono); font-size: 15px; letter-spacing: .18em; color: var(--accent); }
+    .hero__lead { margin: 0; max-width: 52ch; color: var(--muted); }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+
+    .btn {
+      min-height: 44px; padding: 0 28px; display: inline-flex; align-items: center;
+      border-radius: 999px; font-size: 14px; border: 1px solid var(--text);
+    }
+    .btn--ghost { border-color: var(--border-strong); background: var(--surface); }
+
+    /* Terminal */
+    .terminal {
+      flex: 1 1 380px; min-width: 0;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+    }
+    .terminal__bar { display: flex; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .terminal__bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+    .terminal__body {
+      margin: 0; padding: 24px 22px; overflow-x: auto;
+      font-family: var(--font-mono); font-size: 13px; line-height: 1.9; color: var(--muted);
+    }
+    .t-prompt { color: var(--accent); }
+    .t-ok { color: var(--ok); }
+    .t-done { color: var(--text); }
+
+    /* Two-column layout */
+    .split { display: flex; flex-wrap: wrap; gap: 48px; }
+    .split__head { flex: 1 1 260px; min-width: 0; }
+    .split__body { flex: 2 1 460px; min-width: 0; max-width: 64ch; display: flex; flex-direction: column; gap: 20px; }
+    .split__body p { margin: 0; }
+    .lead { font-size: 18px; color: var(--text-soft); }
+
+    /* Resume */
+    .resume { display: flex; flex-direction: column; gap: 56px; }
+    .resume__cols { display: flex; flex-wrap: wrap; gap: 48px 56px; }
+    .col { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+    .col--wide { flex: 1.4 1 360px; }
+    .col--narrow { flex: 1 1 240px; }
+    .col-title {
+      font-family: var(--font-mono); font-size: 13px; letter-spacing: .12em; color: var(--muted);
+      border-bottom: 1px solid var(--border); padding-bottom: 12px;
+    }
+    .col-title + .col-title, .gap-top { margin-top: 16px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+    .tags li { padding: 6px 14px; border: 1px solid var(--border-strong); border-radius: 999px; font-size: 14px; }
+
+    .langs { display: flex; flex-direction: column; gap: 6px; margin: 0; font-size: 15px; color: var(--text-soft); }
+    .langs div { display: flex; justify-content: space-between; }
+    .langs dd { margin: 0; color: var(--muted); }
+
+    .timeline-item { display: flex; gap: 20px; }
+    .timeline-item__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); margin-top: 9px; flex: none; }
+    .timeline-item__dot--active { background: var(--accent); }
+    .timeline-item__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .timeline-item__title { font-weight: 600; font-size: 17px; }
+    .timeline-item__date { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
+    .timeline-item__text { color: var(--muted); font-size: 15px; }
+
+    .plain-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; color: var(--text-soft); font-size: 15px; }
+
+    /* Contact */
+    .contact { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end; justify-content: space-between; }
+    .contact__text { flex: 1 1 420px; min-width: 0; }
+    .contact__text p { margin: 16px 0 0; max-width: 48ch; }
+    .socials { display: flex; gap: 16px; }
+    .social {
+      width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border-strong); border-radius: 50%; background: var(--surface);
+      color: var(--text); transition: color .2s, border-color .2s, transform .2s;
+    }
+    .social svg { width: 22px; height: 22px; }
+    .social:hover { opacity: 1; color: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+    @media (prefers-reduced-motion: reduce) { .social { transition: none; } .social:hover { transform: none; } }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--line); }
+    .footer .container {
+      padding-top: 40px; padding-bottom: 40px;
+      display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <nav class="nav__links" aria-label="Main">
+        <a href="#home" class="is-active">Home</a>
+        <a href="#about">About</a>
+        <a href="#resume">Resume</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <span class="muted">Nukus, Uzbekistan</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="container hero">
+      <div class="hero__text">
+        <div class="hero__first">JALALATDIN</div>
+        <h1 class="hero__last">RAMANOV</h1>
+        <div class="hero__role">BACKEND DEVELOPER · PHP / LARAVEL</div>
+        <p class="hero__lead">I build reliable server-side applications with PHP and Laravel. Coming from a mathematics background, I enjoy turning complex logic into clean, testable code.</p>
+        <div class="hero__actions">
+          <a class="btn" href="#resume">Resume</a>
+          <a class="btn btn--ghost" href="#contact">Contact me</a>
+        </div>
+      </div>
+
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal__bar"><span></span><span></span><span></span></div>
+<pre class="terminal__body"><span class="t-prompt">$</span> composer install
+<span class="t-prompt">$</span> php artisan test
+<span class="t-ok">  PASS</span>  Tests\Feature
+<span class="t-ok">  PASS</span>  Tests\Unit
+<span class="t-prompt">$</span> php artisan migrate
+<span class="t-done">Ready to ship.</span></pre>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container split">
+        <div class="split__head">
+          <div class="eyebrow">ABOUT</div>
+          <h2 class="h2">About me</h2>
+        </div>
+        <div class="split__body">
+          <p class="lead">I'm a 22-year-old backend developer based in Nukus, Uzbekistan. I work with PHP and Laravel, building APIs, authentication, payment logic and admin tools.</p>
+          <p class="muted">I currently work at Uzinfocom, one of the largest IT companies in Uzbekistan, where I develop backend services for large-scale web platforms as part of a team.</p>
+          <p class="muted">I moved into software development from mathematics and studied at Ustudy IT Academy. In my free time I keep learning: algorithms, SQL and building small side projects.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume" class="section section--alt">
+      <div class="container resume">
+        <div>
+          <div class="eyebrow">RESUME</div>
+          <h2 class="h2">Experience and skills</h2>
+        </div>
+
+        <div class="resume__cols">
+          <div class="col">
+            <div class="col-title">TECH STACK</div>
+            <ul class="tags">
+              <li>PHP</li><li>Laravel</li><li>Yii2</li><li>PostgreSQL</li>
+              <li>MySQL</li><li>REST API</li><li>Git</li><li>Telegram bots</li>
+            </ul>
+            <div class="col-title gap-top">LANGUAGES</div>
+            <dl class="langs">
+              <div><dt>Karakalpak</dt><dd>Native</dd></div>
+              <div><dt>Uzbek</dt><dd>Fluent</dd></div>
+              <div><dt>English</dt><dd>Intermediate (B1)</dd></div>
+            </dl>
+          </div>
+
+          <div class="col col--wide">
+            <div class="col-title">EXPERIENCE</div>
+            <div class="timeline-item">
+              <div class="timeline-item__dot timeline-item__dot--active"></div>
+              <div class="timeline-item__body">
+                <div class="timeline-item__title">Backend Developer, Uzinfocom</div>
+                <div class="timeline-item__date">Oct 2025 – Present</div>
+                <div class="timeline-item__text">Backend development with PHP and Laravel in a team environment: new features, code review, testing and staged releases.</div>
+              </div>
+            </div>
+            <div class="col-title gap-top">EDUCATION</div>
+            <div class="timeline-item">
+              <div class="timeline-item__dot"></div>
+              <div class="timeline-item__body">
+                <div class="timeline-item__title">Ustudy IT Academy</div>
+                <div class="timeline-item__text">Backend development. Previous background: mathematics.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col col--narrow">
+            <div class="col-title">WHAT I DO</div>
+            <ul class="plain-list">
+              <li>APIs and authentication</li>
+              <li>Payment and billing logic</li>
+              <li>Telegram bots</li>
+              <li>Third-party integrations</li>
+              <li>Admin panels and internal tools</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container contact">
+        <div class="contact__text">
+          <div class="eyebrow">CONTACT</div>
+          <h2 class="h2">Let's work together</h2>
+          <p class="muted">Open to freelance work and interesting backend projects.</p>
+        </div>
+        <div class="socials">
+          <a class="social" href="mailto:ramanovjalalatdin@gmail.com" aria-label="Email" title="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          </a>
+          <a class="social" href="https://www.linkedin.com/in/jalalatdin-laravel" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          </a>
+          <a class="social" href="https://github.com/jalalatdin0077" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2.17c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0C17.3 4.97 18.3 5.3 18.3 5.3c.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.21.69.82.57A12 12 0 0 0 12 .3"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span>© <span id="year">2026</span> Jalalatdin Ramanov</span>
+      <span>Backend Developer · PHP / Laravel</span>
+    </div>
+  </footer>
+
+  <script>
+    // Joriy yil
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll paytida menyudagi faol bo'limni belgilash
+    const links = document.querySelectorAll('.nav__links a');
+    const sections = [...links].map(a => document.querySelector(a.getAttribute('href')));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + entry.target.id));
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => s && observer.observe(s));
+  </script>
+</body>
+</html>
